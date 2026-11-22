@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CicloSafe | Rutas seguras sin mirar la pantalla en Lima</title>
+  <link rel="icon" href="../favicon.ico" type="image/x-icon" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/Styles.css" />
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="container nav-content">
+      <a href="#inicio" class="brand">
+        <span class="brand-icon" aria-hidden="true">CS</span>
+        <span>CicloSafe</span>
+        <span class="brand-badge">Lima Eyes-Free</span>
+      </a>
+
+      <button id="navToggle" class="nav-toggle" type="button"
+              aria-label="Abrir menú de navegación" aria-expanded="false"
+              aria-controls="navLinks navActions">
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+        <span class="nav-toggle-bar" aria-hidden="true"></span>
+      </button>
+
+      <nav id="navLinks" class="nav-links" aria-label="Flujos principales">
+        <a href="#flujo-rutas"> Rutas Seguras</a>
+        <a href="#flujo-eyesfree"> Guiado Eyes-Free</a>
+        <a href="#flujo-comunidad"> Comunidad y Parqueos</a>
+        <a href="#flujo-municipal"> Portal Municipal</a>
+      </nav>
+
+      <div id="navActions" class="nav-actions">
+        <button id="btnModoDiscreto" class="btn-outline-light" type="button" aria-pressed="false">
+          Modo Discreto: OFF
+        </button>
+        <a href="#flujo-rutas" class="btn-primary btn-sm">Probar Simulador</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="inicio">
+
+    <section id="flujo-rutas" class="hero-section">
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <span class="pill-tag pill-green">Flujo 1 · Planificación de Ruta (HU 01–08)</span>
+          <h1>Muévete en bici por Lima priorizando ciclovías y sin mirar el celular</h1>
+          <p class="hero-subtitle">
+            Prototipo enfocado en rutas segregadas, sombra, luz nocturna y avisos por audio o vibración mientras pedaleas.
+          </p>
+
+          <div class="card planner-card">
+            <div class="planner-inputs">
+              <div class="form-group">
+                <label for="selectOrigen">Origen (HU-01)</label>
+                <select id="selectOrigen">
+                  <option value="miraflores">Óvalo de Miraflores (Av. Arequipa)</option>
+                  <option value="sanisidro">Parque El Olivar (San Isidro)</option>
+                  <option value="pueblolibre">Plaza Bolívar (Pueblo Libre)</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="selectDestino">Destino (HU-01)</label>
+                <select id="selectDestino">
+                  <option value="upc">Campus UPC Monterrico (Surco)</option>
+                  <option value="centro">Plaza San Martín (Cercado de Lima)</option>
+                  <option value="sanborja">Pentagonito (San Borja)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="filter-bar" role="group" aria-label="Preferencias de ruta">
+              <label class="chip-check">
+                <input type="checkbox" id="chkSegregada" checked />
+                <span>Ciclovía segregada (HU-02)</span>
+              </label>
+              <label class="chip-check">
+                <input type="checkbox" id="chkSombra" checked />
+                <span>Más sombra (HU-03)</span>
+              </label>
+              <label class="chip-check">
+                <input type="checkbox" id="chkIluminacion" />
+                <span>Buena luz de noche (HU-04)</span>
+              </label>
+              <label class="chip-check">
+                <input type="checkbox" id="chkEvitarRiesgo" checked />
+                <span>Evitar zonas complicadas (HU-05)</span>
+              </label>
+            </div>
+
+            <div id="rutaResultado" class="route-result" aria-live="polite">
+              <div class="route-header">
+                <div>
+                  <span class="badge badge-safe" id="rutaBadge">92% Ciclovía Segregada</span>
+                  <h3 id="rutaTitulo">Av. Arequipa → Ciclovía Velasco Astete → UPC</h3>
+                </div>
+                <div class="route-metrics">
+                  <div><strong id="rutaTiempo">28 min</strong><span>Tiempo</span></div>
+                  <div><strong id="rutaDistancia">8.4 km</strong><span>Distancia</span></div>
+                </div>
+              </div>
+              <p id="rutaDetalle" class="route-desc">
+                Tramo con árboles y vigilancia constante; evita cruces conflictivos.
+              </p>
+              <div class="route-footer">
+                <button id="btnDescargarOffline" class="btn-secondary btn-sm" type="button">
+                  Guardar mapa offline (HU-08)
+                </button>
+                <span id="offlineStatus" class="status-text">Sin conexión disponible al descargar</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero-media">
+          <div class="media-frame">
+            <img
+              src="../assets/images/hero-mockup-ciclosafe.png"
+              alt="Vista del planificador de rutas de CicloSafe en Lima"
+              width="1920" height="1026"
+              decoding="async"
+              tabindex="0" role="button" aria-label="Ampliar imagen: planificador de rutas de CicloSafe"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="flujo-eyesfree" class="section-alt">
+      <div class="container">
+        <div class="section-header">
+          <span class="pill-tag pill-blue">Flujo 2 · Navegación Eyes-Free y Emergencia (HU 09–17)</span>
+          <h2>Avisos por audio y vibración para no distraerte</h2>
+          <p>
+            Prueba cómo reaccionaría la app ante giros, obstáculos o bloqueos sin tener que sacar el teléfono.
+          </p>
+        </div>
+
+        <div class="eyesfree-grid">
+          <div class="card">
+            <h3>Prueba de alertas (audio y vibración)</h3>
+            <p class="card-sub">Elige un caso para ver qué aviso se dispara:</p>
+
+            <div class="sim-buttons">
+              <button type="button" class="sim-btn sim-safe" data-evento="giro">
+                <strong>Giro a 40 m (HU-09/10)</strong>
+                <span>Audio izquierdo + 1 vibración corta</span>
+              </button>
+
+              <button type="button" class="sim-btn sim-warn" data-evento="bache">
+                <strong>Bache o peatones (HU-11/12)</strong>
+                <span>Aviso preventivo + doble vibración</span>
+              </button>
+
+              <button type="button" class="sim-btn sim-danger" data-evento="bloqueo">
+                <strong>Ciclovía cerrada o bloqueada (HU-13/14)</strong>
+                <span>Alerta urgente + desvío rápido</span>
+              </button>
+            </div>
+
+            <div id="monitorEyesFree" class="monitor-box monitor-idle" aria-live="polite">
+              <div class="monitor-top">
+                <span id="monitorEstadoBadge" class="badge badge-safe">En espera</span>
+                <span id="monitorTimer" class="timer-pill">Latencia: 0.0 s</span>
+              </div>
+              <p id="monitorMensaje">
+                Selecciona uno de los botones de arriba para probar la respuesta.
+              </p>
+              <div id="hapticBar" class="haptic-visualizer" aria-hidden="true">
+                <span></span><span></span><span></span><span></span><span></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="stack-cards">
+            <div class="card card-sos">
+              <div class="card-badge-row">
+                <span class="badge badge-danger">Emergencia (HU-15 / HU-16)</span>
+              </div>
+              <h3>Botón SOS con ubicación</h3>
+              <p>
+                Pensado para mandar tu ubicación a contactos de confianza o Serenazgo si ocurre algún incidente o caída.
+              </p>
+              <div class="sos-controls">
+                <button id="btnSOS" class="btn-danger" type="button">Probar SOS (3 s)</button>
+                <span id="sosFeedback" class="sos-status" aria-live="polite">Estado: Inactivo</span>
+              </div>
+            </div>
+
+            <div class="card card-night">
+              <div class="card-badge-row">
+                <span class="badge badge-dark">Uso nocturno (HU-17)</span>
+              </div>
+              <h3>Modo Discreto</h3>
+              <p>
+                Baja el brillo y oscurece la pantalla para evitar llamar la atención en zonas solas o malograrnos la vista.
+              </p>
+              <button id="btnToggleNightCard" class="btn-primary btn-sm" type="button" aria-pressed="false">
+                Alternar Modo Discreto en esta página
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="flujo-comunidad" class="section-white">
+      <div class="container">
+        <div class="section-header">
+          <span class="pill-tag pill-green">Flujo 3 · Reportes y Cicloparqueaderos (HU 18–24)</span>
+          <h2>Reportes rápidos y dónde dejar la bici</h2>
+          <p>
+            Simulación de avisos hechos con comando de voz y búsqueda de estacionamientos según lo que necesites.
+          </p>
+        </div>
+
+        <div class="community-grid">
+          <div class="card">
+            <h3>Reportes por voz (HU 18–20)</h3>
+            <p class="card-sub">Simula un reporte rápido sin detenerte:</p>
+
+            <div class="voice-actions">
+              <button type="button" class="btn-primary btn-sm voice-cmd" data-tipo="danger" data-texto="Auto estacionado bloqueando ciclovía en Av. Salaverry cdra. 18">
+                "Reportar auto en ciclovía"
+              </button>
+              <button type="button" class="btn-warning btn-sm voice-cmd" data-tipo="warn" data-texto="Bache profundo sin señalizar antes del cruce Av. Javier Prado">
+                "Reportar bache peligroso"
+              </button>
+              <button type="button" class="btn-secondary btn-sm voice-cmd" data-tipo="warn" data-texto="Poste sin iluminación en tramo Av. Petit Thouars">
+                "Reportar falta de luz"
+              </button>
+            </div>
+
+            <div id="feedComunidad" class="feed-list" aria-live="polite">
+              <article class="feed-item feed-danger">
+                <div>
+                  <span class="badge badge-danger">Bloqueo · Hace 3 min</span>
+                  <p>Camión de carga obstruyendo carril bici en Av. Arequipa cdra. 24.</p>
+                </div>
+                <button type="button" class="btn-vote" data-votes="14">Validar (14)</button>
+              </article>
+
+              <article class="feed-item feed-warn">
+                <div>
+                  <span class="badge badge-warn">Aviso · Hace 11 min</span>
+                  <p>Obras municipales con desmonte en berma lateral de Av. Angamos.</p>
+                </div>
+                <button type="button" class="btn-vote" data-votes="9">Validar (9)</button>
+              </article>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="parking-header">
+              <div>
+                <h3>Cicloparqueaderos (HU 21–24)</h3>
+                <p class="card-sub">Filtra por tipo de espacio:</p>
+              </div>
+              <select id="filtroParqueo" aria-label="Filtrar cicloparqueaderos">
+                <option value="todos">Todos</option>
+                <option value="vigilado">Con vigilancia</option>
+                <option value="techado">Techado / Cerrado</option>
+                <option value="gratuito">Gratuito</option>
+              </select>
+            </div>
+
+            <div id="listaParqueos" class="parking-list" aria-live="polite">
+              <div class="parking-item" data-categoria="vigilado techado">
+                <div>
+                  <strong>Estación UPC Monterrico - Puerta 2</strong>
+                  <span>Techado · Cámaras y control con carné · 42 espacios</span>
+                </div>
+                <span class="badge badge-safe">Gratuito</span>
+              </div>
+
+              <div class="parking-item" data-categoria="vigilado">
+                <div>
+                  <strong>Cicloparqueadero Óvalo Miraflores</strong>
+                  <span>Apoyo de Serenazgo · Anclaje en U · 18 espacios</span>
+                </div>
+                <span class="badge badge-safe">Gratuito</span>
+              </div>
+
+              <div class="parking-item" data-categoria="vigilado techado">
+                <div>
+                  <strong>Hub Ciclista San Isidro - Av. Rivera Navarrete</strong>
+                  <span>Módulo cerrado + inflador y herramientas · 12 espacios</span>
+                </div>
+                <span class="badge badge-warn">S/ 2.00 / día</span>
+              </div>
+
+              <div class="parking-item" data-categoria="gratuito">
+                <div>
+                  <strong>Parque de la Exposición - Acceso Paseo Colón</strong>
+                  <span>Zona iluminada junto a caseta de control · 25 espacios</span>
+                </div>
+                <span class="badge badge-safe">Gratuito</span>
+              </div>
+            </div>
+            <p id="parqueoFeedback" class="status-text status-text-spaced" aria-live="polite"></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="flujo-municipal" class="section-alt">
+      <div class="container">
+        <div class="section-header">
+          <span class="pill-tag pill-blue">Flujo 4 · Seguimiento Municipal (HU 25–30)</span>
+          <h2>Resumen de incidencias y métricas del prototipo</h2>
+          <p>
+            Vista de ejemplo para revisar reportes por zona y descargar los datos de prueba en CSV.
+          </p>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <span class="kpi-value text-green">-38%</span>
+            <strong>Menos zonas críticas</strong>
+            <p>Estimación en rutas priorizando ciclovías segregadas.</p>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-value text-blue">142 km</span>
+            <strong>Tramos revisados</strong>
+            <p>Referencia de ciclovías evaluadas en la simulación.</p>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-value text-warn">&lt; 2.4 s</span>
+            <strong>Tiempo de desvío</strong>
+            <p>Promedio objetivo ante bloqueos en hora punta.</p>
+          </div>
+          <div class="kpi-card">
+            <span class="kpi-value text-green">94%</span>
+            <strong>Uso sin mirar pantalla</strong>
+            <p>Resultado de referencia en pruebas de usabilidad.</p>
+          </div>
+        </div>
+
+        <div class="municipal-grid">
+          <div class="card">
+            <div class="table-top">
+              <h3>Incidencias registradas (HU 28–30)</h3>
+              <button id="btnExportarCSV" class="btn-primary btn-sm" type="button">
+                Exportar CSV (HU-30)
+              </button>
+            </div>
+
+            <div class="table-wrapper">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Distrito / Eje Vial</th>
+                    <th>Incidencia</th>
+                    <th>Severidad</th>
+                    <th>Estado</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>#CS-104</td>
+                    <td>Cercado · Av. Garcilaso</td>
+                    <td>Fin abrupto de ciclovía sin rampa</td>
+                    <td><span class="badge badge-danger">Crítica</span></td>
+                    <td>En revisión</td>
+                  </tr>
+                  <tr>
+                    <td>#CS-109</td>
+                    <td>Miraflores · Av. Larco</td>
+                    <td>Autos estacionados en carril bici</td>
+                    <td><span class="badge badge-warn">Media</span></td>
+                    <td>En seguimiento</td>
+                  </tr>
+                  <tr>
+                    <td>#CS-112</td>
+                    <td>San Borja · Av. San Borja Norte</td>
+                    <td>Luz reparada y señalización</td>
+                    <td><span class="badge badge-safe">Resuelta</span></td>
+                    <td>Cerrada</td>
+                  </tr>
+                  <tr>
+                    <td>#CS-118</td>
+                    <td>Surco · Av. Primavera</td>
+                    <td>Bache en carril derecho sentido oeste</td>
+                    <td><span class="badge badge-warn">Media</span></td>
+                    <td>Pendiente</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p id="exportFeedback" class="status-text status-text-spaced" aria-live="polite"></p>
+          </div>
+
+          <div class="media-frame">
+            <img
+              src="../assets/images/dashboard-municipal.png"
+              alt="Vista del panel de mapa comunitario y parqueos en CicloSafe"
+              width="1918" height="1021"
+              loading="lazy" decoding="async"
+              tabindex="0" role="button" aria-label="Ampliar imagen: panel de mapa comunitario y parqueos"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>
+        <div class="brand brand-footer">
+          <span class="brand-icon">CS</span>
+          <span>CicloSafe</span>
+        </div>
+        <p class="footer-desc">
+          Curso <strong>1ASI0784 (HCI for UX Design)</strong> · NRC 15342.
+        </p>
+      </div>
+
+      <div>
+        <h4>Integrantes</h4>
+        <ul class="team-list">
+          <li>George Anthony Prieto Flores (U202515096)</li>
+          <li>Fabricio Leon Rojas Angel (U202514307)</li>
+          <li>Luis Fernando Patricio Vasquez (U202517310)</li>
+          <li>Jonathan Josue Tinoco Bustos (U20251D400)</li>
+          <li>Maria Julia Paucar Valverde (U20251B720)</li>
+          <li>Jhomar Andre Miraval Huamani (U20251G642)</li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Secciones</h4>
+        <ul class="footer-links">
+          <li><a href="#flujo-rutas">Rutas Seguras</a></li>
+          <li><a href="#flujo-eyesfree">Guiado Eyes-Free y SOS</a></li>
+          <li><a href="#flujo-comunidad">Comunidad y Parqueos</a></li>
+          <li><a href="#flujo-municipal">Portal Municipal</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>
